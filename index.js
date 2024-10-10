@@ -81,5 +81,5 @@ const analyzeGeolocationPerformance = async (iterations, interval) => {
   }
 };
 
-// Ejecutar el análisis, 500 veces con un intervalo de 5 segundos
-analyzeGeolocationPerformance(500, 5000);
+// Ejecutar el análisis, 500 veces con un intervalo de 10 segundos
+analyzeGeolocationPerformance(500, 10000);

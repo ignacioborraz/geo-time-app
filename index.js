@@ -10,8 +10,6 @@ const getLocationFromBrowser = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        console.log({ latitude, longitude });
-
         resolve({ latitude, longitude });
       },
       (error) => reject(new Error(`Error obteniendo ubicación: ${error.message}`)),
@@ -70,9 +68,10 @@ const analyzeGeolocationPerformance = async (iterations, interval) => {
   for (let i = 1; i <= iterations; i++) {
     try {
       const start = performance.now();
-      await getLocationFromBrowser();
+      const { latitude, longitude } = await getLocationFromBrowser();
       const end = performance.now();
       const time = (end - start).toFixed();
+      console.log({ latitude, longitude, time });
       updateChart(time, i);
     } catch (error) {
       console.error(error.message);
@@ -82,5 +81,5 @@ const analyzeGeolocationPerformance = async (iterations, interval) => {
   }
 };
 
-// Ejecutar el análisis, 200 veces con un intervalo de 4 segundos
-analyzeGeolocationPerformance(500, 4000);
+// Ejecutar el análisis, 500 veces con un intervalo de 5 segundos
+analyzeGeolocationPerformance(500, 5000);

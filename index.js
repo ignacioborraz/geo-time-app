@@ -96,4 +96,4 @@ const getMostFrequent = (arr) => {
   return mostFrequentValue;
 };
 
-analyzeGeolocationPerformance(10, 10000);
+analyzeGeolocationPerformance(1000, 10000);

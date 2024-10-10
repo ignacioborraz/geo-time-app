@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Geolocalización Performance</title>
+  <title>Geolocalización y Tiempos</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>Análisis de Tiempos de Geolocalización</h1>
+  <h2>Resultados de Geolocalización</h2>
+  <div>
+    <p><strong>Latitud:</strong> <span id="latitude"></span></p>
+    <p><strong>Longitud:</strong> <span id="longitude"></span></p>
+    <p><strong>Valor más frecuente de Time (ms):</strong> <span id="frequent-time"></span></p>
+  </div>
   <canvas id="geolocationChart" width="400" height="200"></canvas>
   <script src="./index.js"></script>
 </body>

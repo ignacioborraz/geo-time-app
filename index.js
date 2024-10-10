@@ -1,8 +1,4 @@
 const getLocationFromBrowser = () => {
-  const options = {
-    enableHighAccuracy: true,
-    maximumAge: 0
-  };
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
       return reject(new Error('Geolocalización no es soportada por el navegador'));
@@ -13,7 +9,6 @@ const getLocationFromBrowser = () => {
         resolve({ latitude, longitude });
       },
       (error) => reject(new Error(`Error obteniendo ubicación: ${error.message}`)),
-      options
     );
   });
 };
@@ -26,8 +21,8 @@ const geolocationChart = new Chart(ctx, {
     datasets: [{
       label: 'Tiempo de Geolocalización (ms)',
       data: [],
-      borderColor: 'rgba(255, 0, 0, 1)', // Color rojo para el gráfico
-      borderWidth: 2,
+      borderColor: 'rgba(255, 0, 0, 1)',
+      borderWidth: 1,
       fill: false,
     }]
   },
@@ -37,22 +32,22 @@ const geolocationChart = new Chart(ctx, {
         title: {
           display: true,
           text: 'Iteración',
-          color: 'darkblue' // Azul oscuro para el texto del eje X
+          color: 'rgba(0, 0, 139, 1)',
         },
         ticks: {
-          color: 'darkblue' // Azul oscuro para los números del eje X
-        }
+          color: 'rgba(0, 0, 139, 1)',
+        },
       },
       y: {
         beginAtZero: true,
         title: {
           display: true,
           text: 'Tiempo (ms)',
-          color: 'darkblue' // Azul oscuro para el texto del eje Y
+          color: 'rgba(0, 0, 139, 1)',
         },
         ticks: {
-          color: 'darkblue' // Azul oscuro para los números del eje Y
-        }
+          color: 'rgba(0, 0, 139, 1)',
+        },
       }
     }
   }
@@ -65,21 +60,40 @@ const updateChart = (time, iteration) => {
 };
 
 const analyzeGeolocationPerformance = async (iterations, interval) => {
+  const times = [];
+
   for (let i = 1; i <= iterations; i++) {
     try {
       const start = performance.now();
       const { latitude, longitude } = await getLocationFromBrowser();
       const end = performance.now();
       const time = (end - start).toFixed();
-      console.log({ latitude, longitude, time });
+      document.getElementById('latitude').innerText = latitude;
+      document.getElementById('longitude').innerText = longitude;
+      times.push(time);
       updateChart(time, i);
+      const mostFrequentTime = getMostFrequent(times);
+      document.getElementById('frequent-time').innerText = mostFrequentTime;
+
     } catch (error) {
       console.error(error.message);
     }
-
     await new Promise(res => setTimeout(res, interval));
   }
 };
 
-// Ejecutar el análisis, 500 veces con un intervalo de 10 segundos
-analyzeGeolocationPerformance(500, 10000);
+const getMostFrequent = (arr) => {
+  const frequencyMap = {};
+  let maxFrequency = 0;
+  let mostFrequentValue = null;
+  arr.forEach(value => {
+    frequencyMap[value] = (frequencyMap[value] || 0) + 1;
+    if (frequencyMap[value] > maxFrequency) {
+      maxFrequency = frequencyMap[value];
+      mostFrequentValue = value;
+    }
+  });
+  return mostFrequentValue;
+};
+
+analyzeGeolocationPerformance(10, 10000);

@@ -66,7 +66,6 @@ const updateChart = (time, iteration) => {
 
 const analyzeGeolocationPerformance = async (iterations, interval) => {
   const times = [];
-
   for (let i = 1; i <= iterations; i++) {
     try {
       const start = performance.now();
@@ -79,10 +78,10 @@ const analyzeGeolocationPerformance = async (iterations, interval) => {
       updateChart(time, i);
       const mostFrequentTime = getMostFrequent(times);
       document.getElementById('frequent-time').innerText = mostFrequentTime;
-
     } catch (error) {
       console.error(error.message);
     }
+    console.log(times);    
     await new Promise(res => setTimeout(res, interval));
   }
 };

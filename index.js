@@ -9,6 +9,11 @@ const getLocationFromBrowser = () => {
         resolve({ latitude, longitude });
       },
       (error) => reject(new Error(`Error obteniendo ubicación: ${error.message}`)),
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      }
     );
   });
 };
